@@ -69,4 +69,70 @@ describe Hand do
     subject.cards << Card.new("Q", "D")
     expect(subject.straight?).to be_true
   end
+
+  it 'detects a four of a kind' do
+    subject.stub(:values).and_return(['8', '8', '7', '8', '8'])
+    expect(subject.four_of_a_kind?).to be_true
+  end
+
+  it 'detects when its not four of a kind' do
+    subject.stub(:values).and_return(['4','3','3', 'J'])
+    expect(subject.four_of_a_kind?).to be_false
+  end
+
+  it 'detects a full house' do
+    subject.stub(:values).and_return(%w(3 K 3 3 K))
+    expect(subject.full_house?).to be_true
+  end
+
+  it 'detects when its not a full house' do
+    subject.stub(:values).and_return(%w(A T 8 K 8))
+    expect(subject.full_house?).to be_false
+  end
+
+  it 'detects a flush' do
+    subject.stub(:types).and_return(%w(D D D D D))
+    expect(subject.flush?).to be_true
+  end
+
+  it 'detects a flush' do
+    subject.stub(:types).and_return(%w(D H D D D))
+    expect(subject.flush?).to be_false
+  end
+
+  it 'detects three of a kind' do
+    subject.stub(:values).and_return(%w(A 8 8 K 8))
+    expect(subject.three_of_a_kind?).to be_true
+  end
+
+  it 'detects when there are not three of a kind' do
+    subject.stub(:values).and_return(%w(A J 8 K 8))
+    expect(subject.three_of_a_kind?).to be_false
+  end
+
+  it 'detects when there are two pairs' do
+    subject.stub(:values).and_return(%w(A J J 7 A 4))
+    expect(subject.two_pair?).to be_true
+  end
+
+  it 'detects when there are not two pairs' do
+    subject.stub(:values).and_return(%w(A J 5 7 A 4))
+    expect(subject.two_pair?).to be_false
+  end
+
+  it 'detects one pair' do
+    subject.stub(:values).and_return(%w(A J 5 7 A 4))
+    expect(subject.one_pair?).to be_true
+  end
+
+  it 'detects when there is not a single pair' do
+    subject.stub(:values).and_return(%w(8 T 6 Q 5))
+    expect(subject.one_pair?).to be_false
+  end
+
+  it 'detects the highest card in the hand' do
+    subject.stub(:indexes).and_return([1, 3, 4, 10, 9])
+    expect(subject.highest_card).to eq 10
+  end
+
 end
