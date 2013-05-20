@@ -1,4 +1,4 @@
 Project Euler
 =============
 
-Tasks of [Project Euler](http://project-euler.net). Solved with TDD.
+Tasks of [Project Euler](http://projecteuler.net). Solved with TDD.
