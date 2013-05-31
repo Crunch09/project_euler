@@ -135,4 +135,33 @@ describe Hand do
     expect(subject.highest_card).to eq 10
   end
 
+  it 'gets the winner of a hand' do
+    subject.cards << Card.new("A", "C")
+    subject.cards << Card.new("A", "H")
+    subject.cards << Card.new("3", "C")
+    subject.cards << Card.new("K", "S")
+    subject.cards << Card.new("Q", "D")
+    hand_two = Hand.new
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("2", "H")
+    hand_two.cards << Card.new("8", "C")
+    hand_two.cards << Card.new("Q", "S")
+    hand_two.cards << Card.new("K", "D")
+    expect(subject.beats?(hand_two)).to be true
+
+    subject = Hand.new
+    subject.cards << Card.new("A", "C")
+    subject.cards << Card.new("A", "H")
+    subject.cards << Card.new("3", "C")
+    subject.cards << Card.new("K", "S")
+    subject.cards << Card.new("Q", "D")
+    hand_two = Hand.new
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("2", "C")
+    hand_two.cards << Card.new("8", "C")
+    hand_two.cards << Card.new("Q", "C")
+    hand_two.cards << Card.new("K", "C")
+    expect(subject.beats?(hand_two)).to be false
+  end
+
 end

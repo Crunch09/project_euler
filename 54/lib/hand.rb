@@ -1,6 +1,17 @@
 class Hand
   attr_accessor :cards
 
+  HIGH_CARD = 1
+  ONE_PAIR = 2
+  TWO_PAIR = 3
+  THREE_OF_A_KIND = 4
+  STRAIGHT = 5
+  FLUSH = 6
+  FULL_HOUSE = 7
+  FOUR_OF_A_KIND = 8
+  STRAIGHT_FLUSH = 9
+  ROYAL_FLUSH = 10
+
   def initialize
     self.cards = []
   end
@@ -79,6 +90,34 @@ class Hand
 
   def highest_card
     indexes.max
+  end
+
+  def beats? other_hand
+    self.rank > other_hand.rank
+  end
+
+  def rank
+    if royal_flush?
+      ROYAL_FLUSH
+    elsif straight_flush?
+      STRAIGHT_FLUSH
+    elsif four_of_a_kind?
+      FOUR_OF_A_KIND
+    elsif full_house?
+      FULL_HOUSE
+    elsif flush?
+      FLUSH
+    elsif straight?
+      STRAIGHT
+    elsif three_of_a_kind?
+      THREE_OF_A_KIND
+    elsif two_pair?
+      TWO_PAIR
+    elsif one_pair?
+      ONE_PAIR
+    else
+      HIGH_CARD
+    end
   end
 
 end
