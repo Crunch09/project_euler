@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+
+require_relative '../lib/hand'
+require_relative '../lib/card'
+
+wins_of_player_one = 0
+begin
+  file = File.new("poker.txt", "r")
+  while (line = file.gets)
+    cards = line.split(' ')
+    player_one_cards = cards[0..4]
+    player_two_cards = cards[5..9]
+    hand_player_one = Hand.new
+    hand_player_two = Hand.new
+    player_one_cards.each do |card|
+      hand_player_one.cards << Card.new(card[0], card[1])
+    end
+    player_two_cards.each do |card|
+      hand_player_two.cards << Card.new(card[0], card[1])
+    end
+    if hand_player_one.beats? hand_player_two
+      wins_of_player_one += 1
+    end
+  end
+  file.close
+  puts "Player one has won #{wins_of_player_one} times"
+rescue => err
+  puts "Exception: #{err}"
+  err
+end

@@ -93,7 +93,13 @@ class Hand
   end
 
   def beats? other_hand
-    self.rank > other_hand.rank
+    rank_of_first_hand = self.rank
+    rank_of_second_hand = other_hand.rank
+    if rank_of_first_hand == rank_of_second_hand
+      has_higher_rank_of? rank_of_first_hand, other_hand
+    else
+      rank_of_first_hand > rank_of_second_hand
+    end
   end
 
   def rank
@@ -118,6 +124,59 @@ class Hand
     else
       HIGH_CARD
     end
+  end
+
+  private
+
+  def has_higher_rank_of? rank, other_hand
+    hand_one_ixs = self.indexes.sort.reverse
+    hand_two_ixs = other_hand.indexes.sort.reverse
+    case rank
+    when HIGH_CARD
+      return higher_card? other_hand
+    when ONE_PAIR
+      pair_one = hand_one_ixs.select{|e| hand_one_ixs.count(e) > 1}.uniq.first
+      pair_two = hand_two_ixs.select{|e| hand_two_ixs.count(e) > 1}.uniq.first
+      if pair_one == pair_two
+        return higher_card? other_hand
+      else
+        return pair_one > pair_two
+      end
+    when TWO_PAIR
+      return higher_card? other_hand
+    when THREE_OF_A_KIND, FULL_HOUSE
+      ix_of_three_one = hand_one_ixs.select{|e| hand_one_ixs.count(e) == 3}.uniq.first
+      ix_of_three_two = hand_two_ixs.select{|e| hand_two_ixs.count(e) == 3}.uniq.first
+      if ix_of_three_one == ix_of_three_two
+        return higher_card? other_hand
+      else
+        return ix_of_three_one > ix_of_three_two
+      end
+    when FOUR_OF_A_KIND
+      ix_of_four_one = hand_one_ixs.select{|e| hand_one_ixs.count(e) == 3}.uniq.first
+      ix_of_four_two = hand_two_ixs.select{|e| hand_two_ixs.count(e) == 3}.uniq.first
+      if ix_of_four_one == ix_of_four_two
+        return higher_card? other_hand
+      else
+        return ix_of_four_one > ix_of_four_two
+      end
+    else
+      higher_card? other_hand
+    end
+
+  end
+
+  def higher_card? other_hand
+    hand_one_ixs = self.indexes.sort.reverse
+    hand_two_ixs = other_hand.indexes.sort.reverse
+    hand_one_ixs.each_with_index do |val, ix|
+      if val > hand_two_ixs[ix]
+        return true
+      elsif val < hand_two_ixs[ix]
+        return false
+      end
+    end
+    false
   end
 
 end

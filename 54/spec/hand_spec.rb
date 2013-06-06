@@ -164,4 +164,61 @@ describe Hand do
     expect(subject.beats?(hand_two)).to be false
   end
 
+  it 'checks the higher value of the same rank' do
+    subject.cards << Card.new("A", "C")
+    subject.cards << Card.new("5", "H")
+    subject.cards << Card.new("3", "C")
+    subject.cards << Card.new("K", "S")
+    subject.cards << Card.new("Q", "D")
+    hand_two = Hand.new
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("2", "H")
+    hand_two.cards << Card.new("8", "C")
+    hand_two.cards << Card.new("Q", "S")
+    hand_two.cards << Card.new("K", "C")
+    expect(subject.beats?(hand_two)).to be true
+
+    subject = Hand.new
+    subject.cards << Card.new("7", "C")
+    subject.cards << Card.new("5", "H")
+    subject.cards << Card.new("3", "C")
+    subject.cards << Card.new("K", "S")
+    subject.cards << Card.new("Q", "D")
+    hand_two = Hand.new
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("2", "H")
+    hand_two.cards << Card.new("8", "C")
+    hand_two.cards << Card.new("Q", "S")
+    hand_two.cards << Card.new("K", "C")
+    expect(subject.beats?(hand_two)).to be false
+
+    subject = Hand.new
+    subject.cards << Card.new("7", "C")
+    subject.cards << Card.new("Q", "H")
+    subject.cards << Card.new("3", "C")
+    subject.cards << Card.new("K", "S")
+    subject.cards << Card.new("Q", "D")
+    hand_two = Hand.new
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("2", "H")
+    hand_two.cards << Card.new("8", "C")
+    hand_two.cards << Card.new("T", "S")
+    hand_two.cards << Card.new("K", "C")
+    expect(subject.beats?(hand_two)).to be true
+
+    subject = Hand.new
+    subject.cards << Card.new("7", "C")
+    subject.cards << Card.new("Q", "H")
+    subject.cards << Card.new("3", "C")
+    subject.cards << Card.new("Q", "S")
+    subject.cards << Card.new("Q", "D")
+    hand_two = Hand.new
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("2", "H")
+    hand_two.cards << Card.new("T", "C")
+    hand_two.cards << Card.new("T", "S")
+    hand_two.cards << Card.new("K", "C")
+    expect(subject.beats?(hand_two)).to be true
+  end
+
 end
